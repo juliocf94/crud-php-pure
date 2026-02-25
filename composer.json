@@ -1,0 +1,16 @@
+{
+    "name": "jc_as/crud-php-pure",
+    "description": "Crud con php puro y javascript puro",
+    "autoload": {
+        "psr-4": {
+            "JcAs\\CrudPhpPure\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Julio Flores",
+            "email": "cesarff.julio@gmail.com"
+        }
+    ],
+    "require": {}
+}
