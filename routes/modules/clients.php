@@ -3,12 +3,13 @@
 use App\Controllers\ClientController;
 use App\Models\ClientRepository;
 
-// Cada archivo de rutas recibe el router y el DB
-$controller = new ClientController(
-    new ClientRepository($db)
-);
+return function ($router, $db) {
+    $controller = new ClientController(
+        new ClientRepository($db)
+    );
+    $router->get('/api/clients',        fn()     => $controller->index());
+};
 
-$router->get('/api/clients',        fn()     => $controller->index());
 /*$router->post('/api/clients',       fn()     => $controller->store());
 $router->get('/api/clients/{id}',   fn($id)  => $controller->show($id));
 $router->put('/api/clients/{id}',   fn($id)  => $controller->update($id));

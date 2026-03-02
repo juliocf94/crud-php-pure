@@ -3,7 +3,6 @@
 namespace App\Core;
 
 use App\Core\ExceptionHandler;
-use App\Core\Database;
 use App\Core\Router;
 use App\Core\Middleware\MiddlewarePipeline;
 
@@ -11,12 +10,11 @@ class Application
 {
     private Router $router;
     private MiddlewarePipeline $pipeline;
-    private \PDO $db;
 
-    public function __construct()
+    public function __construct(private \PDO $db)
     {
         ExceptionHandler::register();
-        $this->db       = Database::getConnection();
+        $this->db       = $db;
         $this->router   = new Router();
         $this->pipeline = new MiddlewarePipeline();
     }
@@ -29,11 +27,9 @@ class Application
 
     public function loadRoutes(array $files): void
     {
-        $router = $this->router;
-        $db     = $this->db;
-
         foreach ($files as $file) {
-            require $file;
+            $routes = require $file;
+            $routes($this->router, $this->db);
         }
     }
 
