@@ -1,0 +1,25 @@
+<?php
+
+use Dotenv\Dotenv;
+use App\Core\Application;
+use App\Core\Middleware\CorsMiddleware;
+use App\Core\Middleware\JsonBodyMiddleware;
+
+// Constants
+const ROUTES_PATH = BASE_PATH . '/routes/modules/';
+
+$dotenv = Dotenv::createImmutable(BASE_PATH);
+$dotenv->load();
+
+$app = new Application();
+
+// Middleware global
+$app->addMiddleware(new CorsMiddleware());
+$app->addMiddleware(new JsonBodyMiddleware());
+
+// Cargar archivos de rutas
+$app->loadRoutes([
+    ROUTES_PATH . 'clients.php',
+]);
+
+return $app;
