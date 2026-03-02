@@ -5,6 +5,7 @@ namespace App\Core;
 use App\Core\ExceptionHandler;
 use App\Core\Router;
 use App\Core\Middleware\MiddlewarePipeline;
+use App\Core\Request;
 
 class Application
 {
@@ -35,11 +36,10 @@ class Application
 
     public function run(): void
     {
-        $this->pipeline->process(function () {
-            $this->router->dispatch(
-                $_SERVER['REQUEST_METHOD'],
-                $_SERVER['REQUEST_URI']
-            );
+        $request = Request::capture();
+
+        $this->pipeline->process(function () use ($request) {
+            $this->router->dispatch($request);
         });
     }
 }
