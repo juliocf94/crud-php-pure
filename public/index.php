@@ -7,6 +7,7 @@ define('BASE_PATH', dirname(__DIR__));
 require BASE_PATH . '/vendor/autoload.php';
 
 use Dotenv\Dotenv;
+use App\Core\ExceptionHandler;
 use App\Core\Database;
 use App\Core\Router;
 use App\Controllers\ClientController;
@@ -15,6 +16,8 @@ use App\Models\ClientRepository;
 // Load env
 $dotenv = Dotenv::createImmutable(BASE_PATH);
 $dotenv->load();
+
+ExceptionHandler::register();
 
 // Initialize dependencies (Manual DI)
 $db = Database::getConnection();
