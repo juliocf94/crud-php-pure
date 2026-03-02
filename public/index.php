@@ -12,23 +12,40 @@ use App\Core\Database;
 use App\Core\Router;
 use App\Controllers\ClientController;
 use App\Models\ClientRepository;
+use App\Core\Middleware\MiddlewarePipeline;
+use App\Core\Middleware\CorsMiddleware;
+use App\Core\Middleware\JsonBodyMiddleware;
+// use App\Core\Middleware\AuthMiddleware;
 
-// Load env
+// 1. Cargar entorno
 $dotenv = Dotenv::createImmutable(BASE_PATH);
 $dotenv->load();
 
+// 2. Registrar manejador de excepciones
 ExceptionHandler::register();
 
-// Initialize dependencies (Manual DI)
+// 3. Inicializar dependencias
 $db = Database::getConnection();
 $repository = new ClientRepository($db);
 $controller = new ClientController($repository);
 
-// Router
+// 4. Registrar rutas
 $router = new Router();
 
-$router->get('/api/clients', function () use ($controller) {
-    $controller->index();
-});
+$router->get('/api/clients', fn() => $controller->index());
 
-$router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+// 5. Configurar middleware y despachar UNA sola vez
+$pipeline = new MiddlewarePipeline();
+
+$pipeline
+    ->add(new CorsMiddleware())
+    ->add(new JsonBodyMiddleware());
+    // ->add(new AuthMiddleware());
+
+// 6. Procesar request a través del pipeline → dispatch
+$pipeline->process(function () use ($router) {
+    $router->dispatch(
+        $_SERVER['REQUEST_METHOD'],
+        $_SERVER['REQUEST_URI']
+    );
+});
