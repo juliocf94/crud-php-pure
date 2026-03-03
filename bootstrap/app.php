@@ -6,11 +6,11 @@ use App\Core\Middleware\CorsMiddleware;
 use App\Core\Database;
 use App\Core\Middleware\JsonBodyMiddleware;
 
-// Constants
-const ROUTES_PATH = BASE_PATH . '/routes/modules/';
-
 $dotenv = Dotenv::createImmutable(BASE_PATH);
 $dotenv->load();
+
+// Constants
+const ROUTES_PATH = BASE_PATH . '/routes/modules/';
 
 $db = Database::getConnection();
 $app = new Application($db);
