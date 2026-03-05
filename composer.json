@@ -1,5 +1,5 @@
 {
-  "name": "jc_as/crud-php-pure",
+  "name": "jc_as/php-mini-framework",
   "description": "Crud con php puro y javascript puro",
   "autoload": {
     "psr-4": {
@@ -14,6 +14,7 @@
     }
   ],
   "require": {
+    "php": ">=8.1",
     "vlucas/phpdotenv": "^5.6"
   }
 }
