@@ -1,6 +1,7 @@
 {
   "name": "jc_as/crud-php-pure",
   "description": "Crud con php puro y javascript puro",
+  "version": "v1.0.0",
   "autoload": {
     "psr-4": {
       "App\\": "app/",
