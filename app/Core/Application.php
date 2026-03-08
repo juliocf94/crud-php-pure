@@ -15,6 +15,7 @@ class Application
     public function __construct(private \PDO $db)
     {
         ExceptionHandler::register();
+        $this->db       = $db;
         $this->router   = new Router();
         $this->pipeline = new MiddlewarePipeline();
     }
@@ -25,15 +26,11 @@ class Application
         return $this;
     }
 
-    public function loadRoutes(string $directory): void
+    public function loadRoutes(array $files): void
     {
-        foreach (glob($directory . '/*.php') as $file) {
-
+        foreach ($files as $file) {
             $routes = require $file;
-
-            if (is_callable($routes)) {
-                $routes($this->router, $this->db);
-            }
+            $routes($this->router, $this->db);
         }
     }
 
